@@ -1,0 +1,149 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nyt/global//global/global}
+    \entry{CookDavid2016EpiI}{article}{}
+      \name{author}{3}{}{%
+        {{hash=b6d3884f1c46a2c201f641229267a3d6}{%
+           family={Cook},
+           familyi={C\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=5ef43c255749d1c3748c8705420c4674}{%
+           family={Davíðsdóttir},
+           familyi={D\bibinitperiod},
+           given={Brynhildur},
+           giveni={B\bibinitperiod}}}%
+        {{hash=a33a59e6c0f8782b61f07b1fd61e0845}{%
+           family={Kristófersson},
+           familyi={K\bibinitperiod},
+           given={Daði\bibnamedelima Már},
+           giveni={D\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {eng}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier Ltd}%
+      }
+      \strng{namehash}{28d245d111f6d37bb728dc0c0360eadb}
+      \strng{fullhash}{28d245d111f6d37bb728dc0c0360eadb}
+      \strng{bibnamehash}{28d245d111f6d37bb728dc0c0360eadb}
+      \strng{authorbibnamehash}{28d245d111f6d37bb728dc0c0360eadb}
+      \strng{authornamehash}{28d245d111f6d37bb728dc0c0360eadb}
+      \strng{authorfullhash}{28d245d111f6d37bb728dc0c0360eadb}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Decision-making in Iceland has occurred without reference to economic valuations of the environmental impacts of energy projects. Environmental Impact Assessments, a legal requirement for nearly all energy projects in Iceland since 1994, have played an important role in identifying the environmental impacts of energy projects, and proposing mitigation measures. However, a purely qualitative description of environmental impacts is insufficient to ensure that they are accounted for equivalently with all of the other costs and benefits of a proposed project. Instead, as monetary information concerning the welfare gains or losses of proposed projects is not currently required to be provided to the licensing body, Orkustofnun, there is the potential for sub-optimal decision-making to occur. As this paper sets out, a broad variety of non-market valuation techniques already exist and could be applied to estimate the value of environmental benefits sacrificed to accommodate such developments. These methods and their outcomes could be incorporated within mandatory cost-benefit assessments for proposed Icelandic energy projects, communicating an estimate of the full welfare implications of approvals to decision-makers and the public alike, and fulfilling an OECD demand for the country to commence such processes. •Current risk of sub-optimal decision-making by licensing body, Orkustofnun.•OECD call for monetary valuations of environmental impacts linked to Icelandic energy projects.•Lessons to be learned from US regulatory approach to advance cost-benefit assessment practice in Iceland.•Practice of conducting non-market valuation techniques limited in Iceland, but now growing.}
+      \field{issn}{0301-4215}
+      \field{journaltitle}{Energy policy}
+      \field{title}{Energy projects in Iceland – Advancing the case for the use of economic valuation techniques to evaluate environmental impacts}
+      \field{volume}{94}
+      \field{year}{2016}
+      \field{pages}{104\bibrangedash 113}
+      \range{pages}{10}
+      \keyw{Decision-making ; Environmental impacts ; Economic valuation ; Renewable energy ; Iceland}
+    \endentry
+    \entry{SUEWING20075267}{article}{}
+      \name{author}{2}{}{%
+        {{hash=287126710d80bca83443667ecba516d8}{%
+           family={{Sue Wing}},
+           familyi={S\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod}}}%
+        {{hash=f6887983a3ad379ba1b7fcaf2d38ba20}{%
+           family={Eckaus},
+           familyi={E\bibinitperiod},
+           given={Richard\bibnamedelima S.},
+           giveni={R\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+      }
+      \strng{namehash}{d3d409fce701d77ca95bae7f27c469d4}
+      \strng{fullhash}{d3d409fce701d77ca95bae7f27c469d4}
+      \strng{bibnamehash}{d3d409fce701d77ca95bae7f27c469d4}
+      \strng{authorbibnamehash}{d3d409fce701d77ca95bae7f27c469d4}
+      \strng{authornamehash}{d3d409fce701d77ca95bae7f27c469d4}
+      \strng{authorfullhash}{d3d409fce701d77ca95bae7f27c469d4}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This paper analyzes the influence of the long-run decline in US energy intensity on projections of energy use and carbon emissions to the year 2050. We build on our own recent work which decomposes changes in the aggregate US energy–GDP ratio into shifts in sectoral composition (structural change) and adjustments in the energy demand of individual industries (intensity change), and identifies the impact on the latter of price-induced substitution of variable inputs, shifts in the composition of capital and embodied and disembodied technical progress. We employ a recursive-dynamic computable general equilibrium (CGE) model of the US economy to analyze the implications of these findings for future energy use and carbon emissions. Comparison of the simulation results against projections of historical trends in GDP, energy use and emissions reveals that the range of values for the rate of autonomous energy efficiency improvement (AEEI) conventionally used in CGE models is consistent with the effects of structural changes at the sub-sector level, rather than disembodied technological change. Even so, our results suggest that US emissions may well grow faster in the future than in the recent past.}
+      \field{issn}{0301-4215}
+      \field{journaltitle}{Energy Policy}
+      \field{number}{11}
+      \field{title}{The implications of the historical decline in US energy intensity for long-run CO2 emission projections}
+      \field{volume}{35}
+      \field{year}{2007}
+      \field{pages}{5267\bibrangedash 5286}
+      \range{pages}{20}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.enpol.2006.01.035
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0301421507002303
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0301421507002303
+      \endverb
+      \keyw{Autonomous energy efficiency improvement,CGE models,Climate change policy}
+    \endentry
+    \entry{ggplot2}{book}{}
+      \name{author}{1}{}{%
+        {{hash=1d0f6977ce2d043e298a59a1cd75b7ef}{%
+           family={Wickham},
+           familyi={W\bibinitperiod},
+           given={Hadley},
+           giveni={H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer-Verlag New York}%
+      }
+      \strng{namehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{fullhash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{bibnamehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{authorbibnamehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{authornamehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{authorfullhash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-3-319-24277-4}
+      \field{title}{ggplot2: Elegant Graphics for Data Analysis}
+      \field{year}{2016}
+      \verb{urlraw}
+      \verb https://ggplot2.tidyverse.org
+      \endverb
+      \verb{url}
+      \verb https://ggplot2.tidyverse.org
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

@@ -1,0 +1,379 @@
+---
+title: "CO2 Emission Analysis"
+author:
+- familyname: Wang
+  othernames: Ziyao
+  address: Monash University
+  email: zwan0008@student.monash.edu 
+  qualifications:  MBAt
+- familyname: Zhang
+  othernames: Jiaying
+  address: Monash University
+  email: jzha0342@student.monash.edu
+  qualifications: MBAt
+- familyname: Garg
+  othernames: Karan
+  address: Monash University
+  email: kgar0017@student.monash.edu
+  qualifications:  MBAt
+department: Our consultancy \newline Department of Econometrics and Business Statistics \newline Monash business school
+organization: Monash University,Clayton
+bibliography: references.bib
+biblio-style: authoryear-comp
+linestretch: 1.5
+output:
+  bookdown::pdf_document2:
+    template: monashreport2.tex
+    fig_caption: yes
+    fig_height: 5
+    fig_width: 8
+    includes:
+      in_header: preamble.tex
+    keep_tex: yes
+    number_sections: yes
+    citation_package: biblatex
+    toc: true
+---
+
+```{r , include = FALSE, message = FALSE, warning = FALSE}
+# Libraries
+
+library(tidyverse)
+library(dplyr)
+library(readr)
+library(kableExtra)
+library(gridExtra)
+library(bookdown)
+library(naniar)
+library(lubridate)
+library(broom)
+```
+
+
+
+\clearpage
+
+# Section 1 - Country CHN and USA
+
+## Introduction - research questions
+
+This section will focus on the CO2 emissions between China and the USA and try to discover any possible factors that are associated with the emissions. 
+
+Q1: How do China and the USA’s CO2 emissions change over time?   
+Q2: Are CO2 emissions correlated with the urban population? Is the increase in population necessary will increase the CO2 emissions per capita?  
+
+ 
+```{r setup, message=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE, message = FALSE, fig.align = "center", fig.path = "Figures/")
+```
+
+```{r readdata}
+dat <- read.csv(here::here("Data/Assignment3_data.csv"))
+```
+
+```{r selectcountries}
+country <- c("China", "USA")
+
+dat_comp <- dat %>% 
+  filter(Country_Name %in% country) %>% 
+  rename("CO2_emissions" = CO2_emissions_metric_tons_per_capita)
+```
+## CO2 emissions change over time.
+```{r}
+CHN <- dat_comp %>% 
+  filter(Country_Name == "China") %>% 
+  summarise(Min_emission = min(CO2_emissions, na.rm = TRUE),
+            Median_emission = median(CO2_emissions, na.rm = TRUE),
+            Max_emission = max(CO2_emissions, na.rm = TRUE),
+            Country_Name,
+            .groups = "drop") %>% 
+  slice(1)
+
+USA <- dat_comp %>% 
+  filter(Country_Name == "USA") %>% 
+  summarise(Min_emission = min(CO2_emissions, na.rm = TRUE),
+            Median_emission = median(CO2_emissions, na.rm = TRUE),
+            Max_emission = max(CO2_emissions, na.rm = TRUE),
+            Country_Name,
+            .groups = "drop") %>% 
+  slice(1)
+
+```
+The table \@ref(tab:sumtable) suggests that the USA has a higher CO2 emission per capita than China's through observing the median values. 
+
+```{r sumtable}
+Table <- bind_rows(CHN, USA)
+kable(Table, "latex", caption = "CO2 Emissions per capita summary", booktabs = T) %>% 
+  kable_styling(latex_options = c("striped", "hold_position"))
+```
+
+\clearpage
+
+```{r figure1, warning=FALSE,fig.align='center', fig.cap="CO2 Emissions per Capita over time", fig.width=8, out.width= "50%"}
+ggplot(dat_comp, aes(x = Year, y = CO2_emissions, color = Country_Name)) +
+  geom_line() +
+  facet_wrap(~Country_Name)+
+  theme_bw()
+```
+
+The line charts \@ref(fig:figure1) present the CO2 emissions changes over time for each country. According to the report of @SUEWING20075267, it states that since 2005 the USA is undergoing a shift in its energy generation mix from coal to natural gas, which leads to a significant reduction on the CO2 emission. Thus, the USA's CO2 emission per capita is in a decreasing trend.
+
+## Relationship between CO2 emissions and urban population.
+```{r scatterplot, message = FALSE, warning = FALSE, fig.align='center', fig.cap="Scatter plots for each country", fig.width=12, out.width= "80%"}
+
+ggplot(dat_comp, aes(x = Urban_population, y= CO2_emissions, color = Country_Name)) +
+  geom_point()+
+  geom_smooth(method = "lm", se= FALSE,
+              col = "black",
+              lwd = 1)+
+  theme_bw()+
+  facet_wrap(~ Country_Name)
+
+dat_CHN <- dat_comp %>% 
+  filter(Country_Name == "China")
+dat_USA <- dat_comp %>% 
+  filter(Country_Name == "USA")
+
+lm_CHN <- lm(CO2_emissions ~ Urban_population, data=dat_CHN)
+
+lm_USA <- lm(CO2_emissions ~ Urban_population, data=dat_USA)
+
+```
+
+The figures \@ref(fig:scatterplot), they suggest that the urban population may be a useful explanatory to CO2 emission for China yet not for the USA's. From the linear model, China one has an R squared of `r glance(lm_CHN)$r.squared` and USA one is `r glance(lm_USA)$r.squared`. 
+
+
+\clearpage
+
+# Section 2 - Country Iceland and Thailand
+
+**Introduction** :
+This part focuses on CO2 emissions of Iceland and Thailand. It analyzes the change of CO2 emissions, average annual increase of CO2 emissions during 45 years and explores the relationship between CO2 emissions per person and energy use per person in these two countries.
+
+```{r read_data, echo = FALSE, message = FALSE}
+co2 <- read_csv(file = "Data/Assignment3_data.csv")
+```
+```{r data_use, echo = FALSE}
+co2use<- co2 %>% 
+  dplyr::filter(Country_Name %in% c("Iceland", "Thailand"))%>%
+  dplyr::filter(Year %in% (1971:2014))%>%
+  dplyr::select(Country_Name, Year, IncomeGroup, CO2_emissions_metric_tons_per_capita, Energy_use_kg_of_oil_equivalent_per_capita) %>% 
+  rename(CO2_emission_tons_per_capita = CO2_emissions_metric_tons_per_capita,
+       oil_used_kg_per_capita=Energy_use_kg_of_oil_equivalent_per_capita  )
+```
+
+## How did the CO2 emissions of Iceland and Thailand change from 1971 to 2014, and how much did they change on average each year? 
+```{r co2_emission, echo = FALSE}
+co2_emission <- co2use %>% 
+  group_by(Country_Name) %>% 
+  summarise(average = round(mean(CO2_emission_tons_per_capita),2),
+  min = round(min(CO2_emission_tons_per_capita),2),
+  max = round(max(CO2_emission_tons_per_capita),2)) %>% 
+  mutate(range = max-min,
+         change_per_year = round((max-min)/44,2)) %>% 
+  arrange(- average) 
+```
+```{r co2table, echo = FALSE}
+kable(co2_emission,"latex", caption = "The summary of CO2 emissions of Iceland and Thailand", booktabs = T) %>%
+    kable_styling(latex_options = c("striped", "hold_position"))
+```
+As shown in Table \@ref(tab:co2table),we can see the summary of the situation of CO2 emission in Thailand and Iceland. From 2015 to 2018, **`r co2_emission[1,1]`**'s average CO2 emission was `r co2_emission[2,1]` was much **higher** than that of **`r co2_emission[1,2]`** (`r co2_emission[2,2]`), but **`r co2_emission[2,1]`**'s growth rate was **faster** `r co2_emission[2,6]` per year, while `r co2_emission[1,1]`'s was `r co2_emission[1,6]` per year.
+
+## Are CO2 emissions per person related to energy use per person? What is the connection between them?
+```{r relationship, echo = FALSE, warning = FALSE, fig.align = "center", fig.width = 6, fig.cap = "The relationship between CO2 emissions and energy used"}
+  ggplot(co2use , aes(x = oil_used_kg_per_capita, y = CO2_emission_tons_per_capita) ) +
+  geom_point()+
+  geom_smooth(formula = y ~ x, method = "lm", se = TRUE, level = 0.95)+
+  facet_wrap(~Country_Name)+
+  scale_fill_viridis_d() +
+  theme_bw() +
+  ggtitle("The relationship between CO2 emmisions and energy used")
+```
+The relationship between CO2 emissions and energy use are displayed in \@ref(fig:relationship). 
+\clearpage
+In Thailand and Iceland, the relationships between CO2 emissions and energy use are very **different**. I used linear model to make the relation between these two attributes became more obviously. In **Thailand**, there is an obvious **positive correlation** between **carbon dioxide emissions** and the amount of **oil used**, while in **Iceland**, although not as obvious as in Thailand, it shows a **negative correlation**.
+
+Carbon dioxide and oil use in Iceland have been **growing slowly** or even falling in recent years. Refer to the report @CookDavid2016EpiI, this phenomenon may related to the rapid development of Iceland's renewable energy industry in recent years, with its abundant hydropower and geothermal sources together now supplying almost 100% of electricity generation and 85% of primary energy use, which **decrease** the emission of CO2.
+
+**Conclusion**:
+1) Thailand's per capita carbon dioxide emissions are not as high as Iceland's, but growing faster in recent years.
+2) Carbon dioxide emissions and fuel consumption were significantly positively correlated in Thailand and negatively correlated in Iceland.
+
+
+\clearpage
+
+
+# Section 3 - Country India and UK  
+
+This section showcases:
+
+* How did CO@ emission ad Energy use varied in recent years depending upon population? 
+* How did the CO2 emission varied over the years for both nations?
+* how did the population varied over the years for both nations?
+* Was there any relationship between CO2 emission and population?
+
+I used packages @ggplot2 for graphical analysis
+
+```{r read-data,include=FALSE}
+karan_data <- read.csv(here::here("Data/Assignment3_data.csv"))
+```
+
+```{r nation,include=FALSE}
+India_uk <- karan_data %>% 
+  filter(Country_Name %in% c("India","UK")) %>%
+  rename(Country = Country_Name,
+         Income_Group = IncomeGroup)
+```
+
+```{r co2-clean,include=FALSE}
+# India_uk %>%
+#   vis_miss()
+
+India_co2_mean <- India_uk %>%
+  filter(Country == "India" & (Year >= 2000 & Year < 2015)) %>%
+  mutate(CO2_emissions_metric_tons_per_capita = as.numeric(CO2_emissions_metric_tons_per_capita)) %>%
+  summarise(mean = mean(CO2_emissions_metric_tons_per_capita))
+
+uk_co2_mean <- India_uk %>%
+  filter(Country == "UK" & (Year >= 2000 & Year < 2015)) %>%
+  mutate(CO2_emissions_metric_tons_per_capita = as.numeric(CO2_emissions_metric_tons_per_capita)) %>%
+  summarise(mean = mean(CO2_emissions_metric_tons_per_capita))
+
+for (i in 1:nrow(India_uk)) {
+  if ((India_uk$Country[i] == "India") & (is.na(India_uk$CO2_emissions_metric_tons_per_capita[i]) == TRUE)) {
+    India_uk$CO2_emissions_metric_tons_per_capita[[i]] = India_co2_mean$mean
+  }
+  if ((India_uk$Country[i] == "UK") & (is.na(India_uk$CO2_emissions_metric_tons_per_capita[i]) == TRUE)) {
+    India_uk$CO2_emissions_metric_tons_per_capita[[i]] = uk_co2_mean$mean
+  }
+  }
+
+India_uk %>%
+  vis_miss()
+```
+```{r energy-clean,include=FALSE}
+x <- India_uk %>% 
+  filter(Country == "India" & is.na(Energy_use_kg_of_oil_equivalent_per_capita)) %>% 
+  select(Year,Energy_use_kg_of_oil_equivalent_per_capita)
+
+y <- India_uk %>% 
+  filter(Country == "UK" & is.na(Energy_use_kg_of_oil_equivalent_per_capita)) %>% 
+  select(Year,Energy_use_kg_of_oil_equivalent_per_capita)
+
+India_energy_mean_before_2000 <- India_uk %>%
+  filter(Country == "India" & (Year > 1970 & Year < 2000)) %>%
+  mutate(Energy_use = as.numeric(Energy_use_kg_of_oil_equivalent_per_capita)) %>%
+  summarise(mean = mean(Energy_use))
+
+India_energy_mean_after_2000 <- India_uk %>%
+  filter(Country == "India" & (Year >= 2000 & Year < 2015)) %>%
+  mutate(Energy_use = as.numeric(Energy_use_kg_of_oil_equivalent_per_capita)) %>%
+  summarise(mean = mean(Energy_use))
+
+uk_energy_mean <- India_uk %>%
+  filter(Country == "UK" & (Year >= 2000 & Year <= 2015)) %>%
+  mutate(Energy_use = as.numeric(Energy_use_kg_of_oil_equivalent_per_capita)) %>%
+  summarise(mean = mean(Energy_use))
+
+for (i in 1:nrow(India_uk)) {
+  if ((India_uk$Country[i] == "India") & (is.na(India_uk$Energy_use_kg_of_oil_equivalent_per_capita[i]) == TRUE) & (India_uk$Year[i] >=1960 & India_uk$Year[i] < 1971)) {
+    India_uk$Energy_use_kg_of_oil_equivalent_per_capita[[i]] = India_energy_mean_before_2000$mean
+  }
+  if ((India_uk$Country[[i]] == "India") & (is.na(India_uk$Energy_use_kg_of_oil_equivalent_per_capita[[i]]) == TRUE) & (India_uk$Year[[i]] >= 2015 & India_uk$Year[[i]] <= 2018)) {
+    India_uk$Energy_use_kg_of_oil_equivalent_per_capita[[i]] = India_energy_mean_after_2000$mean
+  }
+    if ((India_uk$Country[[i]] == "UK") & (is.na(India_uk$Energy_use_kg_of_oil_equivalent_per_capita[i]) == TRUE) & (India_uk$Year[i] >= 2015 & India_uk$Year[i] <= 2018)) {
+    India_uk$Energy_use_kg_of_oil_equivalent_per_capita[[i]] = uk_energy_mean$mean
+  }
+  }
+
+India_uk %>%
+  vis_miss()
+```
+## Tabular analysis
+
+```{r statsis,echo=FALSE,message=FALSE,warning=FALSE}
+India_uk %>% 
+  group_by(Country) %>% 
+  #arrange(-Urban_population) %>% 
+  slice_max(Urban_population,
+            n = 5) %>% 
+  select(1:2,5:7) %>% 
+  rename(CO2_emission = CO2_emissions_metric_tons_per_capita,
+         Energy_use = Energy_use_kg_of_oil_equivalent_per_capita) %>%  
+  kable(caption = "CO2 Emission and Energy Use of India and UK when poulation was at its peak") %>% 
+    kable_styling(latex_options = c("basic","striped","hold_position")) 
+```
+
+
+The table \@ref(tab:statsis), tells us that in recent years,With the increase n population:
+
+* CO2 emission in ***India*** slightly increased whereas for ***UK*** it decreased.
+* Similarly, Energy use in ***India*** decreased whereas for ***UK*** it increased.
+
+\clearpage
+## Graphical Analysis
+
+```{r co2-plt,echo=FALSE,out.width= "90%",fig.cap="Co2 Emission in India and UK from 1960 to 2018"}
+ India_uk %>%
+  ggplot(aes(Year,
+             CO2_emissions_metric_tons_per_capita,
+             color = Country,
+             text = CO2_emissions_metric_tons_per_capita)) +
+  geom_line() +
+  xlab("Year(1960-2018)") +
+  ylab("Co2 emission(per metriic ton)")
+
+```
+
+
+The figure \@ref(fig:co2-plt) tells us that:
+
+* Overall CO2 emission was always more of ***UK*** than ***India***.
+* CO2 emission was frequently changing in ***UK*** and all in all was dropping to a min value of **6.5** in **2014** and then exponentially increased to **8.25**.
+* On other hand, in ***India*** it remained pretty much stable and then started gradually increasing from **1984**.
+
+\clearpage 
+```{r popul, echo=FALSE,out.width= "90%", fig.cap="Population of UK and India from 1960-2018", message=FALSE, warning=FALSE}
+ India_uk %>%
+  ggplot(aes(Year,
+             Urban_population,
+             color = Country,
+             text = Urban_population)) +
+  geom_line() +
+  xlab("Year(1960-2018)") +
+  ylab("Urban Population")
+
+```
+
+The figure \@ref(fig:popul) tells us that population:
+
+* In ***India*** increased gradually but at the same time much faster than ***UK***.
+* In ***UK*** it was pretty much the same in 20th Century, but had a slight increase in 21st Century.
+
+\clearpage 
+```{r rel-co2-pop,echo=FALSE,message=FALSE,warning=FALSE,fig.cap="Relatioin between CO2 emission and Urban population",fig.width=8, out.width= "90%"}
+India_uk %>%
+  ggplot(aes(CO2_emissions_metric_tons_per_capita,
+             Urban_population)) +
+  geom_point() +
+  geom_smooth() +
+  facet_wrap(~Country) +
+  xlab("Co2 emission(per metriic ton)") +
+  ylab("Urban Population")
+```
+
+
+
+
+The figure \@ref(fig:rel-co2-pop) tells us that:
+
+* Both for ***India*** and ***UK***, increase in CO2 emission was related to Urban population and also tells us that the relation between the variables is strong(depicted by smooth line). 
+
+## Conclusion for Section 3 
+
+* Increased CO2 emission in ***UK*** is a surprising insight as the population is way less than ***India***.
+* On the other hand, Energy use is justified for both nations in respect to population.
+
+\clearpage
+
